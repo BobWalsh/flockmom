@@ -26,7 +26,7 @@ flock.events.on('app.install', function (event) {
     store.saveUserToken(event.userId, event.token);
 });
 
-// listen for client.slashCommand, this gives us the scrap entered by
+// listen for client.slashCommand, this gives us the mom entered by
 // the user in the "text" property of the event. This text is saved in
 // the in-memory database, following which a message is sent to the
 // conversation.
@@ -37,24 +37,35 @@ flock.events.on('app.install', function (event) {
 // meetingnote.mustache.flockml.
 var meetingNoteTemplate = require('fs').readFileSync('meetingnote.mustache.flockml', 'utf8');
 flock.events.on('client.slashCommand', function (event) {
-    store.saveMomNote(event.userId, event.chat, event.text);
-    var flockml = Mustache.render(meetingNoteTemplate, { event: event, widgetURL: config.endpoint + '/mom' });
-    console.log(flockml);
-    flock.callMethod('chat.sendMessage', store.getUserToken(event.userId), {
-        to: event.chat,
-        text: util.format('%s saved a Meeting Note: %s', event.userName, event.text),
-        flockml: flockml
-    }, function (error, response) {
-        if (!error) {
-            console.log('uid for message: ' + response.uid);
-        } else {
-            console.log('error sending message: ' + error);
-        }
-    });
+    if (event.text.substring(0,5) == "start"){
+      console.log("GOT THE START SUBEVENT");
+    } else if (event.text.substring(0,4) == "stop") {
+      console.log("GOT THE STOP SUBEVENT");
+    } else if (event.text.substring(0,4) == "list") {
+      console.log("GOT THE LIST SUBEVENT");
+      
+    } else {
+      console.log("GOT AN ACTUAL NOTE TO STORE");
+      store.saveMomNote(event.userId, event.chat, event.text);
+      var flockml = Mustache.render(meetingNoteTemplate, { event: event, widgetURL: config.endpoint + '/mom' });
+      console.log(flockml);
+      flock.callMethod('chat.sendMessage', store.getUserToken(event.userId), {
+          to: event.chat,
+          text: util.format('%s saved a Meeting Note: %s', event.userName, event.text),
+          flockml: flockml
+      }, function (error, response) {
+          if (!error) {
+              console.log('uid for message: ' + response.uid);
+          } else {
+              console.log('error sending message: ' + error);
+          }
+      });
+    }
+    
 });
 
 // The widget path is /momnotes. The userId and chat properties of the
-// event are sufficient for us to retrieve the list of scraps for this
+// event are sufficient for us to retrieve the list of notes for this
 // conversation.
 var widgetTemplate = require('fs').readFileSync('index.mustache.html', 'utf8');
 var urlRegex = new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?');
