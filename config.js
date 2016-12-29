@@ -1,6 +1,6 @@
 module.exports = {
     port: 8080,           // this is the default
-    appId: '2e79e41e-09b4-4183-a750-8b7e9e480589',
-    appSecret: '4d7adfab-175e-429a-b727-5a3b4dbb98bd',
+    appId: '41561c46-d09a-466a-9b60-84a88f26085f',
+    appSecret: '193d5fb2-cf78-4eb7-a5d5-472d942b58c4',
     endpoint: 'https://f2bae76e.ngrok.io'
 };
