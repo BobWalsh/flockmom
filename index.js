@@ -35,14 +35,14 @@ flock.events.on('app.install', function (event) {
 // possible using plain text. This FlockML makes use of the <action>
 // tag to open the list of scraps in a sidebar widget. See
 // message.mustache.flockml.
-var messageTemplate = require('fs').readFileSync('message.mustache.flockml', 'utf8');
+var meetingNoteTemplate = require('fs').readFileSync('meetingnote.mustache.flockml', 'utf8');
 flock.events.on('client.slashCommand', function (event) {
-    store.saveScrap(event.userId, event.chat, event.text);
-    var flockml = Mustache.render(messageTemplate, { event: event, widgetURL: config.endpoint + '/scraps' });
+    store.saveMomNote(event.userId, event.chat, event.text);
+    var flockml = Mustache.render(meetingNoteTemplate, { event: event, widgetURL: config.endpoint + '/momnotes' });
     console.log(flockml);
     flock.callMethod('chat.sendMessage', store.getUserToken(event.userId), {
         to: event.chat,
-        text: util.format('%s saved a scrap: %s', event.userName, event.text),
+        text: util.format('%s saved a Meeting Note: %s', event.userName, event.text),
         flockml: flockml
     }, function (error, response) {
         if (!error) {
@@ -53,12 +53,12 @@ flock.events.on('client.slashCommand', function (event) {
     });
 });
 
-// The widget path is /scraps. The userId and chat properties of the
+// The widget path is /momnotes. The userId and chat properties of the
 // event are sufficient for us to retrieve the list of scraps for this
 // conversation.
 var widgetTemplate = require('fs').readFileSync('index.mustache.html', 'utf8');
 var urlRegex = new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?');
-app.get('/scraps', function (req, res) {
+app.get('/momnotes', function (req, res) {
     console.log('request query: ', req.query);
     var userId = res.locals.eventTokenPayload.userId;
     console.log('user id: ', userId);
@@ -70,7 +70,7 @@ app.get('/scraps', function (req, res) {
     }
     console.log('event: ', event);
     res.set('Content-Type', 'text/html');
-    var list = store.listScraps(userId, event.chat);
+    var list = store.listMomNotes(userId, event.chat);
     console.log('list: ', list);
     if (list) {
         list = list.map(function (text) {
