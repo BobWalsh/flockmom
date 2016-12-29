@@ -33,12 +33,12 @@ flock.events.on('app.install', function (event) {
 //
 // We make use of FlockML to send a richer message then what was
 // possible using plain text. This FlockML makes use of the <action>
-// tag to open the list of scraps in a sidebar widget. See
-// message.mustache.flockml.
+// tag to open the list of meeting notes in a sidebar widget. See
+// meetingnote.mustache.flockml.
 var meetingNoteTemplate = require('fs').readFileSync('meetingnote.mustache.flockml', 'utf8');
 flock.events.on('client.slashCommand', function (event) {
     store.saveMomNote(event.userId, event.chat, event.text);
-    var flockml = Mustache.render(meetingNoteTemplate, { event: event, widgetURL: config.endpoint + '/momnotes' });
+    var flockml = Mustache.render(meetingNoteTemplate, { event: event, widgetURL: config.endpoint + '/mom' });
     console.log(flockml);
     flock.callMethod('chat.sendMessage', store.getUserToken(event.userId), {
         to: event.chat,
@@ -58,7 +58,7 @@ flock.events.on('client.slashCommand', function (event) {
 // conversation.
 var widgetTemplate = require('fs').readFileSync('index.mustache.html', 'utf8');
 var urlRegex = new RegExp('(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?');
-app.get('/momnotes', function (req, res) {
+app.get('/mom', function (req, res) {
     console.log('request query: ', req.query);
     var userId = res.locals.eventTokenPayload.userId;
     console.log('user id: ', userId);

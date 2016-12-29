@@ -1,5 +1,5 @@
 var fs = require('fs');
-var db = 'momnotes.json';
+var db = 'mom.json';
 var userTokens = {};
 
 exports.getUserToken = function (userId) {
