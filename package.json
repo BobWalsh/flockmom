@@ -1,0 +1,29 @@
+{
+  "name": "flockmom",
+  "version": "1.0.0",
+  "description": "Minutes of the Meeting app on Flock OS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BobWalsh/flockmom.git"
+  },
+  "keywords": [
+    "FlockOS",
+    "node"
+  ],
+  "author": "Bob Walsh",
+  "license": "MIT",
+  "dependencies": {
+    "flockos": "flockchat/flockos-node-sdk#0.0.3",
+    "express": "^4.14.0",
+    "mustache": "^2.2.1",
+    "request": "^2.74.0"
+  },
+  "bugs": {
+    "url": "https://github.com/BobWalsh/flockmom/issues"
+  },
+  "homepage": "https://github.com/BobWalsh/flockmom#readme"
+}

@@ -1,0 +1,5 @@
+<flockml>
+  {{event.userName}} saved a Meeting Note: {{event.text}}
+  <br/>
+  <em><action type="openWidget" url="{{widgetURL}}" desktopType="sidebar" mobileType="modal">Meeting Notes</action></em>
+</flockml>
